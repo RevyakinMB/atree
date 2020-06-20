@@ -14,36 +14,22 @@
     </div>
     <tree-line
       :columns="columns"
-      :records="records"
     >
-      <template v-slot:selector="{ className, styles }">
-        <input
-          type="checkbox"
-          :class="className"
-          :style="styles"
-        >
+      <template v-slot:sel>
+        <input type="checkbox">
       </template>
-      <template #name="{ className, styles }">
-        <span
-          :class="className"
-          :style="styles"
-        >
+      <template #name>
+        <span>
           Attribute name
         </span>
       </template>
-      <template #types="{ className, styles }">
-        <span
-          :class="className"
-          :style="styles"
-        >
+      <template #types>
+        <span>
           Types are so typical.
         </span>
       </template>
-      <template #options="{ className, styles }">
-        <span
-          :class="className"
-          :style="styles"
-        >
+      <template #options>
+        <span>
           Optional options are completely optional.
         </span>
       </template>

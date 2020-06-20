@@ -9,6 +9,17 @@
 <script>
 import Tree from '@/components/tree/Tree.vue';
 
+const FIELDS = [{
+  name: 'sel',
+  width: 1,
+}, {
+  name: 'name',
+}, {
+  name: 'types',
+}, {
+  name: 'options',
+}];
+
 export default {
   name: 'App',
   components: {
@@ -16,16 +27,7 @@ export default {
   },
   data() {
     return {
-      treeColumns: [{
-        name: 'selector',
-        width: 1,
-      }, {
-        name: 'name',
-      }, {
-        name: 'types',
-      }, {
-        name: 'options',
-      }],
+      treeColumns: FIELDS,
     };
   },
 };

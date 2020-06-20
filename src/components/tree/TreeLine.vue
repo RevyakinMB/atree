@@ -3,11 +3,13 @@
     <template
       v-for="(column, index) in columns"
     >
-      <slot
-        :name="column.name"
-        className="tree__line__item"
-        :styles="columnStyles[index]"
-      />
+      <div
+        :key="column.name"
+        :style="columnStyles[index]"
+        class="tree__line__item-container"
+      >
+        <slot :name="column.name" />
+      </div>
     </template>
   </div>
 </template>
@@ -21,10 +23,6 @@ export default {
       default() {
         return [];
       },
-    },
-    records: {
-      type: Array,
-      required: true,
     },
   },
 
@@ -51,7 +49,7 @@ export default {
     display: flex;
   }
 
-  .tree__line__item {
+  .tree__line__item-container {
     margin: 5px 0;
     flex: 1 1 1px;
   }
