@@ -11,7 +11,7 @@
 export default {
   props: {
     value: {
-      type: Object,
+      type: Array,
       required: false,
       default() {
         return null;
