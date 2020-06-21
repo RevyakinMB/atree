@@ -1,29 +1,62 @@
 <template>
   <div id="app">
-    <Tree
+    <tree
       :columns="treeColumns"
-    />
+    >
+      <template #name="{ record }">
+        <name-cell :value="record.name" />
+      </template>
+      <template #status="{ record }">
+        <status-cell :value="record.status" />
+      </template>
+      <template #date-from="{ record }">
+        <date-cell :value="record.dateFrom" />
+      </template>
+      <template #date-to="{ record }">
+        <date-cell :value="record.dateTo" />
+      </template>
+      <template #options="{ record }">
+        <options-cell
+          :record="record"
+          :value="record.options"
+        />
+      </template>
+    </tree>
   </div>
 </template>
 
 <script>
 import Tree from '@/components/tree/Tree.vue';
+import NameCell from '@/components/tree/NameCell.vue';
+import StatusCell from '@/components/tree/StatusCell.vue';
+import DateCell from '@/components/tree/DateCell.vue';
+import OptionsCell from '@/components/tree/OptionsCell.vue';
 
 const FIELDS = [{
-  name: 'sel',
-  width: 1,
-}, {
   name: 'name',
+  width: 10,
 }, {
-  name: 'types',
+  name: 'status',
+}, {
+  name: 'date-from',
+  title: 'Active from',
+}, {
+  name: 'date-to',
+  title: 'Active until',
 }, {
   name: 'options',
+  title: 'Options',
+  width: 7,
 }];
 
 export default {
   name: 'App',
   components: {
     Tree,
+    NameCell,
+    StatusCell,
+    DateCell,
+    OptionsCell,
   },
   data() {
     return {

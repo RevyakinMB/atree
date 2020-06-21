@@ -5,40 +5,28 @@
         v-for="(column, index) in columns"
         :key="index"
         class="tree__header__item"
-        :style="{
+        :style="column.width && {
           flexGrow: column.width || 5,
         }"
       >
-        {{ column.name }}
+        {{ column.title || column.name }}
       </div>
     </div>
     <tree-line
       :columns="columns"
     >
-      <template v-slot:sel>
-        <input type="checkbox">
-      </template>
-      <template #name>
-        <span>
-          Attribute name
-        </span>
-      </template>
-      <template #types>
-        <span>
-          Types are so typical.
-        </span>
-      </template>
-      <template #options>
-        <span>
-          Optional options are completely optional.
-        </span>
-      </template>
+      <slot
+        v-for="(_, name) in $slots"
+        :slot="name"
+        :name="name"
+      />
     </tree-line>
   </div>
 </template>
 
 <script>
 import TreeLine from './TreeLine.vue';
+
 
 export default {
   components: {
@@ -53,6 +41,10 @@ export default {
       },
     },
   },
+  mounted() {
+    console.log(this.$slots);
+  },
+
   data() {
     return {
       records: [0, 1, 2, 3, 4, 5],
@@ -65,7 +57,6 @@ export default {
 
 <style lang="less">
   .tree {
-    // width: 100%;
     margin: 5px;
     padding: 10px;
     border: 1px dashed black;
@@ -78,7 +69,7 @@ export default {
 
   .tree__header__item {
     margin: 5px 0;
-    flex: 1 1 1px;
+    flex: 5 1 1px;
     border: 1px solid chocolate;
   }
 

@@ -33,9 +33,14 @@ export default {
 
   computed: {
     columnStyles() {
-      return this.columns.map((column) => ({
-        flexGrow: column.width || 5,
-      }));
+      return this.columns.map((column) => {
+        if (!column.width) {
+          return undefined;
+        }
+        return {
+          flexGrow: column.width || 5,
+        };
+      });
     },
   },
 
@@ -51,6 +56,6 @@ export default {
 
   .tree__line__item-container {
     margin: 5px 0;
-    flex: 1 1 1px;
+    flex: 5 1 1px;
   }
 </style>
