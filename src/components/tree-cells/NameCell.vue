@@ -1,17 +1,25 @@
 <template>
   <span>
-    Optional options are completely optional.
+    {{ value }}
   </span>
 </template>
 
 <script>
 export default {
   props: {
+    value: {
+      type: String,
+      required: false,
+      default() {
+        return null;
+      },
+    },
   },
   data() {
     return {
     };
   },
+
   methods: {
   },
 };

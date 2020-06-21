@@ -13,12 +13,15 @@
       </div>
     </div>
     <tree-line
+      v-for="record in records"
+      :key="record.id"
       :columns="columns"
     >
       <slot
-        v-for="(_, name) in $slots"
+        v-for="(_, name) in $scopedSlots"
         :slot="name"
         :name="name"
+        :record="record"
       />
     </tree-line>
   </div>
@@ -40,16 +43,20 @@ export default {
         return [];
       },
     },
-  },
-  mounted() {
-    console.log(this.$slots);
+    records: {
+      type: Array,
+      required: true,
+      default() {
+        return [];
+      },
+    },
   },
 
   data() {
     return {
-      records: [0, 1, 2, 3, 4, 5],
     };
   },
+
   methods: {
   },
 };

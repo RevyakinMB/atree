@@ -2,6 +2,7 @@
   <div id="app">
     <tree
       :columns="treeColumns"
+      :records="records"
     >
       <template #name="{ record }">
         <name-cell :value="record.name" />
@@ -27,10 +28,11 @@
 
 <script>
 import Tree from '@/components/tree/Tree.vue';
-import NameCell from '@/components/tree/NameCell.vue';
-import StatusCell from '@/components/tree/StatusCell.vue';
-import DateCell from '@/components/tree/DateCell.vue';
-import OptionsCell from '@/components/tree/OptionsCell.vue';
+import NameCell from '@/components/tree-cells/NameCell.vue';
+import StatusCell from '@/components/tree-cells/StatusCell.vue';
+import DateCell from '@/components/tree-cells/DateCell.vue';
+import OptionsCell from '@/components/tree-cells/OptionsCell.vue';
+import moment from 'moment';
 
 const FIELDS = [{
   name: 'name',
@@ -61,6 +63,43 @@ export default {
   data() {
     return {
       treeColumns: FIELDS,
+      records: [{
+        id: 1,
+        name: 'Name1',
+        status: {
+          id: 1,
+          name: 'Status #1',
+        },
+        dateFrom: moment(),
+        dateTo: null,
+        options: [],
+      }, {
+        id: 2,
+        name: 'Name2',
+        status: null,
+        dateFrom: null,
+        dateTo: null,
+        options: [{
+          id: 1,
+          name: 'Option 1',
+        }, {
+          id: 2,
+          name: 'Option 2',
+        }, {
+          id: 3,
+          name: 'Option 3',
+        }],
+      }, {
+        id: 3,
+        name: 'Name3',
+        status: {
+          id: 2,
+          name: 'Status #2',
+        },
+        dateFrom: moment().startOf('year'),
+        dateTo: moment().endOf('month'),
+        options: [],
+      }],
     };
   },
 };
