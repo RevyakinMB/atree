@@ -1,17 +1,6 @@
 <template>
   <div class="tree">
-    <div class="tree__header">
-      <div
-        v-for="(column, index) in columns"
-        :key="index"
-        class="tree__header__item"
-        :style="column.width && {
-          flexGrow: column.width || 5,
-        }"
-      >
-        {{ column.title || column.name }}
-      </div>
-    </div>
+    <tree-header :columns="columns" />
     <tree-line
       v-for="record in records"
       :key="record.id"
@@ -29,11 +18,12 @@
 
 <script>
 import TreeLine from './TreeLine.vue';
-
+import TreeHeader from './TreeHeader.vue';
 
 export default {
   components: {
     TreeLine,
+    TreeHeader,
   },
   props: {
     columns: {
@@ -67,17 +57,6 @@ export default {
     margin: 5px;
     padding: 10px;
     border: 1px dashed black;
-  }
-
-  .tree__header {
-    display: flex;
-    text-align: center;
-  }
-
-  .tree__header__item {
-    margin: 5px 0;
-    flex: 5 1 1px;
-    border: 1px solid chocolate;
   }
 
   .tree__contents {
