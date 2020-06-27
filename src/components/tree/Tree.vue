@@ -2,9 +2,10 @@
   <div class="tree">
     <tree-header :columns="columns" />
     <tree-line
-      v-for="record in records"
+      v-for="record in treeNodes"
       :key="record.id"
       :columns="columns"
+      :record="record"
     >
       <slot
         v-for="(_, name) in $scopedSlots"
@@ -17,6 +18,8 @@
 </template>
 
 <script>
+import reoderIntoTree from '@/utils';
+
 import TreeLine from './TreeLine.vue';
 import TreeHeader from './TreeHeader.vue';
 
@@ -45,6 +48,12 @@ export default {
   data() {
     return {
     };
+  },
+
+  computed: {
+    treeNodes() {
+      return reoderIntoTree(this.records);
+    },
   },
 
   methods: {

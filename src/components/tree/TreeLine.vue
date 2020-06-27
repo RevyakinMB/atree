@@ -15,6 +15,7 @@
 </template>
 
 <script>
+const DEPTH_MARGIN = 20; // px
 export default {
   props: {
     columns: {
@@ -23,6 +24,10 @@ export default {
       default() {
         return [];
       },
+    },
+    record: {
+      type: Object,
+      required: true,
     },
   },
 
@@ -33,13 +38,18 @@ export default {
 
   computed: {
     columnStyles() {
-      return this.columns.map((column) => {
-        if (!column.width) {
-          return undefined;
+      return this.columns.map((column, index) => {
+        const styles = {};
+        if (column.width) {
+          styles.flexGrow = column.width;
         }
-        return {
-          flexGrow: column.width || 5,
-        };
+        if (this.record.depth && index === 0) {
+          // TODO: update flex item width, do not change other items' width
+          styles.paddingLeft = `${this.record.depth * DEPTH_MARGIN}px`;
+        }
+        return Object.keys(styles).length
+          ? styles
+          : undefined;
       });
     },
   },
