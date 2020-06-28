@@ -66,6 +66,6 @@ export default {
 
   .tree__line__item-container {
     margin: 5px 0;
-    flex: 5 1 1px;
+    flex: 5 1 50px;
   }
 </style>

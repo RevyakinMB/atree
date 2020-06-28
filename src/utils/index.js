@@ -1,35 +1,49 @@
-const dfs = (
-  verticesWithChildren,
-  recordsMap,
-  reorderedRecords,
+export const dfs = (
   root,
+  vertexChildren,
 ) => {
-  const sortedTreeRecords = [];
+  if (root === undefined || !vertexChildren) {
+    throw new Error('Invalid arguments.');
+  }
+
+  const result = [];
+  const visited = {};
   const vertices = [{
-    id: root.id,
+    id: root,
     depth: 0,
   }];
+
   while (vertices.length) {
     const vertex = vertices.shift();
-    const record = recordsMap[vertex.id];
-    sortedTreeRecords.push({
-      ...record,
+    if (visited[vertex.id]) {
+      throw new Error('Cycle detected.');
+    }
+    visited[vertex.id] = true;
+    result.push({
+      id: vertex.id,
       depth: vertex.depth,
     });
 
-    const children = verticesWithChildren[vertex.id];
+    const children = vertexChildren[vertex.id];
     if (children) {
-      vertices.unshift(...children.map((v) => ({
-        id: v,
+      vertices.unshift(...children.map((id) => ({
+        id,
         depth: vertex.depth + 1,
       })));
     }
   }
-  return reorderedRecords.concat(sortedTreeRecords);
+  return result;
 };
 
-const reoderIntoTree = (source, parentProperty = 'parent') => {
-  const verticesWithChildren = source.reduce((vertices, record) => {
+export const treeSort = (source, parentProperty = 'parent') => {
+  if (!Array.isArray(source)) {
+    throw new Error('No records provided.');
+  }
+  if (!source.length) {
+    return [];
+  }
+
+  const vertexChildren = source.reduce((vertices, record) => {
     const parent = record[parentProperty];
     if (!parent) {
       return vertices;
@@ -48,11 +62,10 @@ const reoderIntoTree = (source, parentProperty = 'parent') => {
 
   const rootRecords = source.filter((record) => !record[parentProperty]);
 
-  return rootRecords.reduce(dfs.bind(
-    undefined,
-    verticesWithChildren,
-    recordsMap,
-  ), []);
+  return rootRecords.reduce((result, root) => result.concat(
+    dfs(root.id, vertexChildren),
+  ), []).map((node) => ({
+    ...recordsMap[node.id],
+    depth: node.depth,
+  }));
 };
-
-export default reoderIntoTree;

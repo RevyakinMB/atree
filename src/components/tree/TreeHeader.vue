@@ -35,7 +35,7 @@ export default {
 
   .tree__header__item {
     margin: 5px 0;
-    flex: 5 1 1px;
+    flex: 5 1 50px;
     border: 1px solid chocolate;
   }
 </style>

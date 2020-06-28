@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import reoderIntoTree from '@/utils';
+import { treeSort } from '@/utils';
 
 import TreeLine from './TreeLine.vue';
 import TreeHeader from './TreeHeader.vue';
@@ -52,7 +52,7 @@ export default {
 
   computed: {
     treeNodes() {
-      return reoderIntoTree(this.records);
+      return treeSort(this.records);
     },
   },
 
