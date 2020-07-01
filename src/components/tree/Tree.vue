@@ -63,7 +63,6 @@ export default {
 
 <style lang="less">
   .tree {
-    margin: 5px;
     padding: 10px;
     border: 1px dashed black;
   }

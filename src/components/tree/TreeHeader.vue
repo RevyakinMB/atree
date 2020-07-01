@@ -8,7 +8,12 @@
         flexGrow: column.width || 5,
       }"
     >
-      {{ column.title || column.name }}
+      <span class="tree__header__item__index">
+        {{ `${index + 1}.` }}
+      </span>
+      <span class="tree__header__item__text">
+        {{ column.title || column.name }}
+      </span>
     </div>
   </div>
 </template>
@@ -29,13 +34,29 @@ export default {
 
 <style lang="less">
   .tree__header {
-    display: flex;
-    text-align: center;
+    display: block;
+    border-bottom: 1px solid chocolate;
   }
 
   .tree__header__item {
-    margin: 5px 0;
-    flex: 5 1 50px;
-    border: 1px solid chocolate;
+    display: inline-block;
+    margin-right: 10px;
+  }
+
+  @media screen and (min-width: 580px) {
+    .tree__header {
+      display: flex;
+      text-align: center;
+    }
+
+    .tree__header__item {
+      display: block;
+      margin: 5px 0;
+      flex: 5 1 50px;
+    }
+
+    .tree__header__item__index {
+      display: none;
+    }
   }
 </style>
