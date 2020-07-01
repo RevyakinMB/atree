@@ -3,6 +3,7 @@
     <tree
       :columns="treeColumns"
       :records="records"
+      :readonly="false"
     >
       <template #name="{ record }">
         <name-cell :value="record.name" />

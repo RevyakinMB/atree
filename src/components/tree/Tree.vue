@@ -1,11 +1,15 @@
 <template>
   <div class="tree">
-    <tree-header :columns="columns" />
+    <tree-header
+      :columns="columns"
+      :readonly="readonly"
+    />
     <tree-line
       v-for="record in treeNodes"
       :key="record.id"
       :columns="columns"
       :record="record"
+      :readonly="readonly"
     >
       <slot
         v-for="(_, name) in $scopedSlots"
@@ -28,6 +32,7 @@ export default {
     TreeLine,
     TreeHeader,
   },
+
   props: {
     columns: {
       type: Array,
@@ -36,6 +41,7 @@ export default {
         return [];
       },
     },
+
     records: {
       type: Array,
       required: true,
@@ -43,10 +49,19 @@ export default {
         return [];
       },
     },
+
+    readonly: {
+      type: Boolean,
+      required: false,
+      default() {
+        return false;
+      },
+    },
   },
 
   data() {
     return {
+      editedRecord: null,
     };
   },
 
@@ -57,6 +72,12 @@ export default {
   },
 
   methods: {
+    recordEditHandler(record) {
+      if (this.editedRecord) {
+        throw new Error('Another record is currently being edited.');
+      }
+      this.editedRecord = record;
+    },
   },
 };
 </script>

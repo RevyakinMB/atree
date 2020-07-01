@@ -15,6 +15,12 @@
         {{ column.title || column.name }}
       </span>
     </div>
+    <div
+      v-if="!readonly"
+      class="tree__header__item__actions"
+    >
+      Actions
+    </div>
   </div>
 </template>
 
@@ -27,6 +33,11 @@ export default {
       default() {
         return [];
       },
+    },
+
+    readonly: {
+      type: Boolean,
+      required: true,
     },
   },
 };
@@ -43,6 +54,10 @@ export default {
     margin-right: 10px;
   }
 
+  .tree__header__item__actions {
+    display: none;
+  }
+
   @media screen and (min-width: 580px) {
     .tree__header {
       display: flex;
@@ -50,6 +65,12 @@ export default {
     }
 
     .tree__header__item {
+      display: block;
+      margin: 5px 0;
+      flex: 5 1 50px;
+    }
+
+    .tree__header__item__actions {
       display: block;
       margin: 5px 0;
       flex: 5 1 50px;
