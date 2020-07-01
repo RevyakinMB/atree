@@ -41,7 +41,7 @@
 import ActionButton from './ActionButton.vue';
 
 const DEPTH_MARGIN = 20; // px
-const MOBILE_MARGIN_MULTIPLIER = 1.5;
+const NARROW_MARGIN_MULTIPLIER = 1.5;
 export default {
   components: {
     ActionButton,
@@ -51,9 +51,6 @@ export default {
     columns: {
       type: Array,
       required: true,
-      default() {
-        return [];
-      },
     },
 
     record: {
@@ -98,7 +95,7 @@ export default {
       }
       return {
         paddingLeft: `${
-          this.record.depth * DEPTH_MARGIN * MOBILE_MARGIN_MULTIPLIER
+          this.record.depth * DEPTH_MARGIN * NARROW_MARGIN_MULTIPLIER
         }px`,
       };
     },
@@ -112,15 +109,15 @@ export default {
 
   methods: {
     addHandler() {
-      console.log('click addHandler');
+      this.$emit('add', this.record);
     },
 
     editHandler() {
-      console.log('click editHandler');
+      this.$emit('edit', this.record);
     },
 
     removeHandler() {
-      console.log('click removeHandler');
+      this.$emit('remove', this.record);
     },
   },
 };

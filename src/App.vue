@@ -4,6 +4,8 @@
       :columns="treeColumns"
       :records="records"
       :readonly="false"
+      @add="recordAddHandler"
+      @remove="recordRemoveHandler"
     >
       <template #name="{ record }">
         <name-cell :value="record.name" />
@@ -28,6 +30,10 @@
 </template>
 
 <script>
+import { v4 as uuid } from 'uuid';
+
+import { dfs, getVertexChildren } from '@/utils';
+
 import Tree from '@/components/tree/Tree.vue';
 import NameCell from '@/components/tree-cells/NameCell.vue';
 import StatusCell from '@/components/tree-cells/StatusCell.vue';
@@ -64,6 +70,7 @@ export default {
   data() {
     return {
       treeColumns: FIELDS,
+      recordBeingAdded: null,
       records: [{
         id: 1,
         name: 'Name1',
@@ -134,6 +141,56 @@ export default {
         options: [],
       }],
     };
+  },
+
+  computed: {
+    recordsMap() {
+      return this.records.reduce((result, record) => ({
+        ...result,
+        [record.id || record.localId]: record,
+      }), {});
+    },
+  },
+
+  methods: {
+    recordAddHandler(record) {
+      if (this.recordBeingAdded) {
+        throw new Error('Another record is currently being added.');
+      }
+
+      const localId = uuid();
+      const newRecord = { localId };
+
+      if (record) {
+        if (record.id) {
+          newRecord.parent = record.id;
+        } else if (record.localId) {
+          newRecord.localParent = record.localId;
+        } else {
+          throw new Error('A record without id is provided.');
+        }
+      }
+
+      this.recordBeingAdded = newRecord;
+      this.records.push(newRecord);
+    },
+
+    recordRemoveHandler(record) {
+      // TODO: forbid removing while editing?
+      // or fix removing of edited/added records
+      const victims = dfs(
+        record.id || record.localId,
+        getVertexChildren(this.records),
+      );
+      const victimsMap = victims.reduce((result, victim) => ({
+        ...result,
+        [victim.id]: victim.id,
+      }), {});
+
+      this.records = this.records.filter(
+        (testee) => !victimsMap[testee.id || testee.localId],
+      );
+    },
   },
 };
 </script>

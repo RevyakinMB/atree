@@ -35,7 +35,19 @@ export const dfs = (
   return result;
 };
 
-export const treeSort = (source, parentProperty = 'parent') => {
+export const getVertexChildren = (records) => records.reduce((vertices, record) => {
+  const parent = record.parent || record.localParent;
+  if (!parent) {
+    return vertices;
+  }
+  const parentVertex = vertices[parent] || [];
+  return {
+    ...vertices,
+    [parent]: parentVertex.concat(record.id || record.localId),
+  };
+}, {});
+
+export const treeSort = (source) => {
   if (!Array.isArray(source)) {
     throw new Error('No records provided.');
   }
@@ -43,29 +55,21 @@ export const treeSort = (source, parentProperty = 'parent') => {
     return [];
   }
 
-  const vertexChildren = source.reduce((vertices, record) => {
-    const parent = record[parentProperty];
-    if (!parent) {
-      return vertices;
-    }
-    const parentVertex = vertices[parent] || [];
-    return {
-      ...vertices,
-      [parent]: parentVertex.concat(record.id),
-    };
-  }, {});
+  const vertexChildren = getVertexChildren(source);
 
   const recordsMap = source.reduce((records, record) => ({
     ...records,
-    [record.id]: record,
+    [record.id || record.localId]: record,
   }), {});
 
-  const rootRecords = source.filter((record) => !record[parentProperty]);
+  const rootRecords = source.filter(
+    (record) => !record.parent && !record.localParent,
+  );
 
   return rootRecords.reduce((result, root) => result.concat(
-    dfs(root.id, vertexChildren),
+    dfs(root.id || root.localId, vertexChildren),
   ), []).map((node) => ({
-    ...recordsMap[node.id],
+    ...recordsMap[node.id || node.localId],
     depth: node.depth,
   }));
 };

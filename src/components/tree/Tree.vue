@@ -6,10 +6,13 @@
     />
     <tree-line
       v-for="record in treeNodes"
-      :key="record.id"
+      :key="record.id || record.localId"
       :columns="columns"
       :record="record"
       :readonly="readonly"
+      @edit="recordEditHandler"
+      @add="recordAddHandler"
+      @remove="recordRemoveHandler"
     >
       <slot
         v-for="(_, name) in $scopedSlots"
@@ -73,10 +76,29 @@ export default {
 
   methods: {
     recordEditHandler(record) {
+      if (!record) {
+        throw new Error('Illegal argument exception.');
+      }
       if (this.editedRecord) {
         throw new Error('Another record is currently being edited.');
       }
       this.editedRecord = record;
+    },
+
+    recordAddHandler(record) {
+      if (!record) {
+        throw new Error('Illegal argument exception.');
+      }
+      if (this.editedRecord) {
+        throw new Error('Another record is currently being edited.');
+      }
+
+      this.$emit('add', record);
+    },
+
+    recordRemoveHandler(record) {
+      // TODO: Vuex
+      this.$emit('remove', record);
     },
   },
 };
@@ -86,9 +108,5 @@ export default {
   .tree {
     padding: 10px;
     border: 1px dashed black;
-  }
-
-  .tree__contents {
-    flex: 1 1 1px;
   }
 </style>
