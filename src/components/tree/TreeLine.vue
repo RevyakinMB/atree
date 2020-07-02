@@ -15,23 +15,40 @@
       </div>
     </template>
     <div
-      v-if="!readonly"
+      v-if="!readonly && !edited"
+      class="tree__line__item-actions"
+    >
+      <div v-if="!actionsHidden">
+        <action-button
+          text="A"
+          tooltip="Add new subrecord"
+          @click.native="addHandler"
+        />
+        <action-button
+          text="E"
+          tooltip="Edit record"
+          @click.native="editHandler"
+        />
+        <action-button
+          text="D"
+          tooltip="Delete record"
+          @click.native="removeHandler"
+        />
+      </div>
+    </div>
+    <div
+      v-if="edited"
       class="tree__line__item-actions"
     >
       <action-button
-        text="A"
-        tooltip="Add new subrecord"
-        @click.native="addHandler"
+        text="S"
+        tooltip="Finish editing"
+        @click.native="() => $emit('save')"
       />
       <action-button
-        text="E"
-        tooltip="Edit record"
-        @click.native="editHandler"
-      />
-      <action-button
-        text="D"
-        tooltip="Delete record"
-        @click.native="removeHandler"
+        text="C"
+        tooltip="Cancel editing"
+        @click.native="() => $emit('cancel')"
       />
     </div>
   </div>
@@ -61,6 +78,19 @@ export default {
     readonly: {
       type: Boolean,
       required: true,
+    },
+
+    edited: {
+      type: Boolean,
+      required: true,
+    },
+
+    actionsHidden: {
+      type: Boolean,
+      required: false,
+      default() {
+        return false;
+      },
     },
   },
 
@@ -128,6 +158,7 @@ export default {
     display: block;
     border-bottom: 1px solid chocolate;
     transition: background 0.2s;
+    min-height: 40px;
   }
 
   .tree__line:hover {

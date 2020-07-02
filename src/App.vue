@@ -4,8 +4,11 @@
       :columns="treeColumns"
       :records="records"
       :readonly="false"
+      :edited-record="recordBeingAdded || recordBeingEdited"
       @add="recordAddHandler"
       @remove="recordRemoveHandler"
+      @cancel="cancelEditingHandler"
+      @save="recordSaveHandler"
     >
       <template #name="{ record }">
         <name-cell :value="record.name" />
@@ -175,9 +178,26 @@ export default {
       this.records.push(newRecord);
     },
 
+    recordSaveHandler() {},
+
+    cancelEditingHandler() {
+      if (!this.recordBeingAdded) {
+        throw new Error('No record is currently being added.');
+      }
+
+      this.records = this.records.filter((record) => ((
+        record.id && record.id !== this.recordBeingAdded.id
+      ) || (
+        record.localId && record.localId !== this.recordBeingAdded.localId
+      )));
+      this.recordBeingAdded = null;
+    },
+
     recordRemoveHandler(record) {
-      // TODO: forbid removing while editing?
-      // or fix removing of edited/added records
+      if (this.recordBeingAdded) {
+        throw new Error('Removing is forbidden while editing a record.');
+      }
+
       const victims = dfs(
         record.id || record.localId,
         getVertexChildren(this.records),

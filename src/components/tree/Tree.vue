@@ -10,9 +10,13 @@
       :columns="columns"
       :record="record"
       :readonly="readonly"
-      @edit="recordEditHandler"
-      @add="recordAddHandler"
-      @remove="recordRemoveHandler"
+      :edited="isBeingEdited(record)"
+      :actions-hidden="!!editedRecord"
+      @edit="(record) => $emit('edit', record)"
+      @add="(record) => $emit('add', record)"
+      @remove="(record) => $emit('remove', record)"
+      @save="() => $emit('save')"
+      @cancel="() => $emit('cancel')"
     >
       <slot
         v-for="(_, name) in $scopedSlots"
@@ -60,12 +64,14 @@ export default {
         return false;
       },
     },
-  },
 
-  data() {
-    return {
-      editedRecord: null,
-    };
+    editedRecord: {
+      type: Object,
+      required: false,
+      default() {
+        return null;
+      },
+    },
   },
 
   computed: {
@@ -75,30 +81,14 @@ export default {
   },
 
   methods: {
-    recordEditHandler(record) {
-      if (!record) {
-        throw new Error('Illegal argument exception.');
-      }
-      if (this.editedRecord) {
-        throw new Error('Another record is currently being edited.');
-      }
-      this.editedRecord = record;
-    },
-
-    recordAddHandler(record) {
-      if (!record) {
-        throw new Error('Illegal argument exception.');
-      }
-      if (this.editedRecord) {
-        throw new Error('Another record is currently being edited.');
+    isBeingEdited(record) {
+      if (!this.editedRecord) {
+        return false;
       }
 
-      this.$emit('add', record);
-    },
-
-    recordRemoveHandler(record) {
-      // TODO: Vuex
-      this.$emit('remove', record);
+      const id = record.id || record.localId;
+      const editedId = this.editedRecord.id || this.editedRecord.localId;
+      return id === editedId;
     },
   },
 };
