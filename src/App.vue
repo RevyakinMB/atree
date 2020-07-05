@@ -5,8 +5,11 @@
       :records="records"
       :readonly="false"
     >
-      <template #name="{ record }">
-        <name-cell :value="record.name" />
+      <template #name="{ record, edited }">
+        <name-cell
+          :value="record.name"
+          :edited="edited"
+        />
       </template>
       <template #status="{ record }">
         <status-cell :value="record.status" />

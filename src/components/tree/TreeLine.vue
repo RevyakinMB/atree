@@ -167,7 +167,9 @@ export default {
 
   @media screen and (min-width: 580px) {
     .tree__line {
-      display: flex;
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(0, 1fr);
       align-items: center;
       border-bottom: none;
       border-radius: 5px;
@@ -175,11 +177,9 @@ export default {
 
     .tree__line__item-container {
       margin: 5px 0;
-      flex: 5 1 50px;
     }
 
     .tree__line__item-actions {
-      flex: 5 1 50px;
       text-align: center;
     }
   }

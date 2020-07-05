@@ -17,12 +17,14 @@
       @cancel="cancelEditingHandler"
       @save="recordSaveHandler"
       @edit="recordEditHandler"
+      @change="onChange"
     >
       <slot
         v-for="(_, name) in $scopedSlots"
         :slot="name"
         :name="name"
         :record="record"
+        :edited="isBeingEdited(record)"
       />
     </tree-line>
   </div>
@@ -176,7 +178,7 @@ export default {
     },
 
     recordRemoveHandler(record) {
-      if (this.recordBeingAdded) {
+      if (this.editedRecord) {
         throw new Error('Removing is forbidden while editing a record.');
       }
 
@@ -192,6 +194,13 @@ export default {
       this.data = this.data.filter(
         (testee) => !victimsMap[testee.id || testee.localId],
       );
+    },
+
+    onChange({ value, name }) {
+      if (!this.editedRecord) {
+        throw new Error('No record is currently being edited.');
+      }
+      this.editedRecord[name] = value;
     },
   },
 };
