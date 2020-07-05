@@ -4,11 +4,6 @@
       :columns="treeColumns"
       :records="records"
       :readonly="false"
-      :edited-record="recordBeingAdded || recordBeingEdited"
-      @add="recordAddHandler"
-      @remove="recordRemoveHandler"
-      @cancel="cancelEditingHandler"
-      @save="recordSaveHandler"
     >
       <template #name="{ record }">
         <name-cell :value="record.name" />
@@ -33,10 +28,6 @@
 </template>
 
 <script>
-import { v4 as uuid } from 'uuid';
-
-import { dfs, getVertexChildren } from '@/utils';
-
 import Tree from '@/components/tree/Tree.vue';
 import NameCell from '@/components/tree-cells/NameCell.vue';
 import StatusCell from '@/components/tree-cells/StatusCell.vue';
@@ -73,7 +64,6 @@ export default {
   data() {
     return {
       treeColumns: FIELDS,
-      recordBeingAdded: null,
       records: [{
         id: 1,
         name: 'Name1',
@@ -144,73 +134,6 @@ export default {
         options: [],
       }],
     };
-  },
-
-  computed: {
-    recordsMap() {
-      return this.records.reduce((result, record) => ({
-        ...result,
-        [record.id || record.localId]: record,
-      }), {});
-    },
-  },
-
-  methods: {
-    recordAddHandler(record) {
-      if (this.recordBeingAdded) {
-        throw new Error('Another record is currently being added.');
-      }
-
-      const localId = uuid();
-      const newRecord = { localId };
-
-      if (record) {
-        if (record.id) {
-          newRecord.parent = record.id;
-        } else if (record.localId) {
-          newRecord.localParent = record.localId;
-        } else {
-          throw new Error('A record without id is provided.');
-        }
-      }
-
-      this.recordBeingAdded = newRecord;
-      this.records.push(newRecord);
-    },
-
-    recordSaveHandler() {},
-
-    cancelEditingHandler() {
-      if (!this.recordBeingAdded) {
-        throw new Error('No record is currently being added.');
-      }
-
-      this.records = this.records.filter((record) => ((
-        record.id && record.id !== this.recordBeingAdded.id
-      ) || (
-        record.localId && record.localId !== this.recordBeingAdded.localId
-      )));
-      this.recordBeingAdded = null;
-    },
-
-    recordRemoveHandler(record) {
-      if (this.recordBeingAdded) {
-        throw new Error('Removing is forbidden while editing a record.');
-      }
-
-      const victims = dfs(
-        record.id || record.localId,
-        getVertexChildren(this.records),
-      );
-      const victimsMap = victims.reduce((result, victim) => ({
-        ...result,
-        [victim.id]: victim.id,
-      }), {});
-
-      this.records = this.records.filter(
-        (testee) => !victimsMap[testee.id || testee.localId],
-      );
-    },
   },
 };
 </script>
