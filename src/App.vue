@@ -18,16 +18,26 @@
           :options="statuses"
         />
       </template>
-      <template #date-from="{ record }">
-        <date-cell :value="record.dateFrom" />
+      <template #date-from="{ record, edited }">
+        <date-cell
+          :value="record.dateFrom"
+          :edited="edited"
+          prop-name="dateFrom"
+        />
       </template>
-      <template #date-to="{ record }">
-        <date-cell :value="record.dateTo" />
+      <template #date-to="{ record, edited }">
+        <date-cell
+          :value="record.dateTo"
+          :edited="edited"
+          prop-name="dateTo"
+        />
       </template>
-      <template #options="{ record }">
+      <template #options="{ record, edited }">
         <options-cell
           :record="record"
           :value="record.options"
+          :edited="edited"
+          :options="options"
         />
       </template>
     </tree>
@@ -50,13 +60,14 @@ const FIELDS = [{
 }, {
   name: 'date-from',
   title: 'Active from',
+  width: 7,
 }, {
   name: 'date-to',
   title: 'Active until',
+  width: 7,
 }, {
   name: 'options',
   title: 'Options',
-  width: 7,
 }];
 
 export default {
@@ -71,6 +82,7 @@ export default {
   data() {
     return {
       treeColumns: FIELDS,
+
       statuses: [{
         id: '1',
         name: 'Status #1',
@@ -84,6 +96,24 @@ export default {
         id: '4',
         name: 'Status #4',
       }],
+
+      options: [{
+        id: '1',
+        name: 'Option 1',
+      }, {
+        id: '2',
+        name: 'Option 2',
+      }, {
+        id: '3',
+        name: 'Option 3',
+      }, {
+        id: '4',
+        name: 'Option 4',
+      }, {
+        id: '5',
+        name: 'Option 5',
+      }],
+
       records: [{
         id: 1,
         name: 'Name1',

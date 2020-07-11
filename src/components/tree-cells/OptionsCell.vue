@@ -1,15 +1,37 @@
 <template>
-  <span v-if="Array.isArray(value) && value.length">
-    {{ value.map((option) => option.name).join(', ') }}
+  <span v-if="!edited">
+    <span v-if="Array.isArray(value) && value.length">
+      {{ value.map((option) => option.name).join(', ') }}
+    </span>
+    <span v-else>
+      &mdash;
+    </span>
   </span>
-  <span v-else>
-    &mdash;
-  </span>
+  <div v-else>
+    <select
+      multiple
+      @change="onChange"
+    >
+      <option
+        v-for="option in options"
+        :key="option.id"
+        :value="option.id"
+        :selected="selectedOptions[option.id]"
+      >
+        {{ option.name }}
+      </option>
+    </select>
+  </div>
 </template>
 
 <script>
 export default {
   props: {
+    options: {
+      type: Array,
+      required: true,
+    },
+
     value: {
       type: Array,
       required: false,
@@ -17,12 +39,50 @@ export default {
         return null;
       },
     },
+
+    edited: {
+      type: Boolean,
+      required: true,
+    },
+
+    propName: {
+      type: String,
+      required: false,
+      default() {
+        return 'options';
+      },
+    },
   },
-  data() {
-    return {
-    };
+
+  computed: {
+    optionsMap() {
+      return this.options.reduce((map, option) => ({
+        ...map,
+        [option.id]: option,
+      }), {});
+    },
+
+    selectedOptions() {
+      const result = this.value.reduce((map, option) => ({
+        ...map,
+        [option.id]: true,
+      }), {});
+      return result;
+    },
   },
+
   methods: {
+    onChange($event) {
+      const { selectedOptions } = $event.target;
+      const newValue = Array.prototype.map.call(
+        selectedOptions,
+        (selectedOption) => this.optionsMap[selectedOption.value],
+      );
+      this.$parent.$emit('change', {
+        value: newValue,
+        name: this.propName,
+      });
+    },
   },
 };
 </script>
