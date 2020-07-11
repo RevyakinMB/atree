@@ -107,9 +107,6 @@ export default {
         }
 
         const styles = {};
-        if (column.width) {
-          styles.flexGrow = column.width;
-        }
         if (this.record.depth && index === 0) {
           styles.paddingLeft = `${this.record.depth * DEPTH_MARGIN}px`;
         }
@@ -120,8 +117,15 @@ export default {
     },
 
     lineStyle() {
+      const defaultFr = 5;
       if (!this.media.isNarrow) {
-        return undefined;
+        const gridWidthDef = this.columns.reduce((style, column) => `${
+          style} ${column.width ? column.width : defaultFr}fr`, '');
+        return {
+          gridTemplateColumns: !this.readonly
+            ? `${gridWidthDef} ${defaultFr}fr`
+            : gridWidthDef,
+        };
       }
       return {
         paddingLeft: `${
@@ -155,7 +159,6 @@ export default {
 
 <style lang="less">
   .tree__line {
-    display: block;
     border-bottom: 1px solid chocolate;
     transition: background 0.2s;
     min-height: 40px;

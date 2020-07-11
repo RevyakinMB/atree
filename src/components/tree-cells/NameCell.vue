@@ -44,7 +44,6 @@ export default {
 
   methods: {
     onChange($event) {
-      console.log(this.$parent, $event);
       this.$parent.$emit('change', {
         value: $event.target.value,
         name: this.propName,

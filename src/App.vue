@@ -11,8 +11,12 @@
           :edited="edited"
         />
       </template>
-      <template #status="{ record }">
-        <status-cell :value="record.status" />
+      <template #status="{ record, edited }">
+        <status-cell
+          :value="record.status"
+          :edited="edited"
+          :options="statuses"
+        />
       </template>
       <template #date-from="{ record }">
         <date-cell :value="record.dateFrom" />
@@ -67,6 +71,19 @@ export default {
   data() {
     return {
       treeColumns: FIELDS,
+      statuses: [{
+        id: '1',
+        name: 'Status #1',
+      }, {
+        id: '2',
+        name: 'Status #2',
+      }, {
+        id: '3',
+        name: 'Status #3',
+      }, {
+        id: '4',
+        name: 'Status #4',
+      }],
       records: [{
         id: 1,
         name: 'Name1',
