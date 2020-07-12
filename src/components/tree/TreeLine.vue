@@ -168,6 +168,11 @@ export default {
     background-color: #f5f5f5;
   }
 
+  .tree__line__item-actions {
+    text-align: right;
+    margin: 5px;
+  }
+
   @media screen and (min-width: 580px) {
     .tree__line {
       display: grid;

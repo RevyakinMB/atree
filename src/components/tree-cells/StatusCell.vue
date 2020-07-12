@@ -1,14 +1,16 @@
 <template>
-  <span v-if="!edited">
-    <span v-if="value">
-      {{ value.name }}
+  <div class="status-edit__container">
+    <span v-if="!edited">
+      <span v-if="value">
+        {{ value.name }}
+      </span>
+      <span v-else>
+        &mdash;
+      </span>
     </span>
-    <span v-else>
-      &mdash;
-    </span>
-  </span>
-  <div v-else>
     <select
+      v-else
+      class="status-edit__input"
       @change="onChange"
     >
       <option value="">
@@ -79,5 +81,11 @@ export default {
 </script>
 
 <style lang="less">
+  .status-edit__container {
+    margin: 5px;
+  }
 
+  .status-edit__input {
+    width: 100%;
+  }
 </style>

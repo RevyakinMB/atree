@@ -1,15 +1,17 @@
 <template>
-  <span v-if="!edited">
-    <span v-if="Array.isArray(value) && value.length">
-      {{ value.map((option) => option.name).join(', ') }}
+  <div class="options-cell__container">
+    <span v-if="!edited">
+      <span v-if="Array.isArray(value) && value.length">
+        {{ value.map((option) => option.name).join(', ') }}
+      </span>
+      <span v-else>
+        &mdash;
+      </span>
     </span>
-    <span v-else>
-      &mdash;
-    </span>
-  </span>
-  <div v-else>
     <select
+      v-else
       multiple
+      class="options-cell__input"
       @change="onChange"
     >
       <option
@@ -88,5 +90,11 @@ export default {
 </script>
 
 <style lang="less">
+  .options-cell__container {
+    margin: 5px;
+  }
 
+  .options-cell__input {
+    width: 100%;
+  }
 </style>

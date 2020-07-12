@@ -1,14 +1,16 @@
 <template>
-  <span v-if="!edited">
-    <span v-if="value">
-      {{ value.format(format) }}
+  <div class="date-cell__container">
+    <span v-if="!edited">
+      <span v-if="value">
+        {{ value.format(format) }}
+      </span>
+      <span v-else>
+        &mdash;
+      </span>
     </span>
-    <span v-else>
-      &mdash;
-    </span>
-  </span>
-  <div v-else>
     <input
+      v-else
+      class="date-cell__input"
       type="date"
       :value="formattedValue"
       @change="onChange"
@@ -71,5 +73,11 @@ export default {
 </script>
 
 <style lang="less">
+  .date-cell__container {
+    margin: 5px;
+  }
 
+  .date-cell__input {
+    width: 100%;
+  }
 </style>

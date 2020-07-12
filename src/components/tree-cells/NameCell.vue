@@ -6,7 +6,7 @@
     <input
       v-else
       type="text"
-      class="name-cell-edit-input"
+      class="name-cell__edit-input"
       :value="value"
       @input="onChange"
     >
@@ -58,7 +58,7 @@ export default {
     margin: 5px;
   }
 
-  .name-cell-edit-input {
+  .name-cell__edit-input {
     width: 100%;
   }
 </style>
