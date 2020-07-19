@@ -65,7 +65,7 @@ export default {
     },
 
     selectedOptions() {
-      const result = this.value.reduce((map, option) => ({
+      const result = (this.value || []).reduce((map, option) => ({
         ...map,
         [option.id]: true,
       }), {});

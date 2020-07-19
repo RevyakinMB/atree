@@ -2,6 +2,7 @@
   <button
     class="tree-action-button"
     :title="tooltip"
+    :disabled="disabled"
   >
     {{ text }}
   </button>
@@ -13,6 +14,14 @@ export default {
     text: {
       type: String,
       required: true,
+    },
+
+    disabled: {
+      type: Boolean,
+      required: false,
+      default() {
+        return false;
+      },
     },
 
     tooltip: {

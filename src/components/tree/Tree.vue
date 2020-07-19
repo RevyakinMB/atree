@@ -12,18 +12,20 @@
       :readonly="readonly"
       :edited="isBeingEdited(record)"
       :actions-hidden="actionsAreHidden"
+      :is-valid="isBeingEdited(record) ? isValid : true"
       @add="recordAddHandler"
       @remove="recordRemoveHandler"
       @cancel="cancelEditingHandler"
       @save="recordSaveHandler"
       @edit="recordEditHandler"
       @change="onChange"
+      @isValid="onValidation"
     >
       <slot
         v-for="(_, name) in $scopedSlots"
         :slot="name"
         :name="name"
-        :record="record"
+        :record="isBeingEdited(record) ? editedRecord : record"
         :edited="isBeingEdited(record)"
       />
     </tree-line>
@@ -75,6 +77,7 @@ export default {
       data: [],
       recordBeingAdded: null,
       recordBeingEdited: null,
+      validation: {},
     };
   },
 
@@ -89,6 +92,10 @@ export default {
 
     actionsAreHidden() {
       return !!this.editedRecord;
+    },
+
+    isValid() {
+      return Object.keys(this.validation).every((field) => this.validation[field]);
     },
   },
 
@@ -135,6 +142,7 @@ export default {
 
       this.recordBeingAdded = newRecord;
       this.data.push(newRecord);
+      this.validation = {};
     },
 
     recordEditHandler(record) {
@@ -143,11 +151,15 @@ export default {
       }
 
       this.recordBeingEdited = { ...record };
+      this.validation = {};
     },
 
     recordSaveHandler() {
       if (!this.editedRecord) {
         throw new Error('No record is currently being edited.');
+      }
+      if (!this.isValid) {
+        throw new Error('Record is invalid.');
       }
 
       const editedId = this.editedRecord.id || this.editedRecord.localId;
@@ -200,7 +212,27 @@ export default {
       if (!this.editedRecord) {
         throw new Error('No record is currently being edited.');
       }
-      this.editedRecord[name] = value;
+
+      if (this.recordBeingAdded) {
+        this.recordBeingAdded = {
+          ...this.recordBeingAdded,
+          [name]: value,
+        };
+      }
+
+      if (this.recordBeingEdited) {
+        this.recordBeingEdited = {
+          ...this.recordBeingEdited,
+          [name]: value,
+        };
+      }
+    },
+
+    onValidation({ value, name }) {
+      this.validation = {
+        ...this.validation,
+        [name]: value,
+      };
     },
   },
 };

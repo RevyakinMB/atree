@@ -9,6 +9,8 @@
         <name-cell
           :value="record.name"
           :edited="edited"
+          :record="record"
+          :is-valid="value => !!value"
         />
       </template>
       <template #status="{ record, edited }">

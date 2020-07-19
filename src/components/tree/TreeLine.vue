@@ -42,6 +42,7 @@
     >
       <action-button
         text="S"
+        :disabled="!isValid"
         tooltip="Finish editing"
         @click.native="() => $emit('save')"
       />
@@ -92,11 +93,14 @@ export default {
         return false;
       },
     },
-  },
 
-  data() {
-    return {
-    };
+    isValid: {
+      type: Boolean,
+      required: false,
+      default() {
+        return true;
+      },
+    },
   },
 
   computed: {
