@@ -1,5 +1,8 @@
 <template>
-  <div class="date-cell__container">
+  <div
+    class="date-cell__container"
+    :class="dateIsValid ? '' : 'date-cell_invalid'"
+  >
     <span v-if="!edited">
       <span v-if="value">
         {{ value.format(format) }}
@@ -41,12 +44,28 @@ export default {
       required: true,
     },
 
+    record: {
+      type: Object,
+      required: false,
+      default() {
+        return null;
+      },
+    },
+
     format: {
       type: String,
       required: false,
       default() {
         // TODO: l10n
         return 'DD.MM.YYYY';
+      },
+    },
+
+    isValid: {
+      type: Function,
+      required: false,
+      default() {
+        return () => true;
       },
     },
   },
@@ -58,6 +77,20 @@ export default {
       }
       return this.value.format('YYYY-MM-DD');
     },
+
+    dateIsValid() {
+      return this.isValid(this.value, this.record);
+    },
+  },
+
+  watch: {
+    record() {
+      this.emitValidityState(this.value);
+    },
+  },
+
+  mounted() {
+    this.emitValidityState(this.value);
   },
 
   methods: {
@@ -68,6 +101,13 @@ export default {
         name: this.propName,
       });
     },
+
+    emitValidityState(newValue) {
+      this.$parent.$emit('isValid', {
+        value: this.isValid(newValue, this.record),
+        name: this.propName,
+      });
+    },
   },
 };
 </script>
@@ -75,6 +115,10 @@ export default {
 <style lang="less">
   .date-cell__container {
     margin: 5px;
+  }
+
+  .date-cell_invalid {
+    background-color: red;
   }
 
   .date-cell__input {

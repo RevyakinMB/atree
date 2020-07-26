@@ -63,11 +63,14 @@ export default {
     },
   },
 
+  watch: {
+    record() {
+      this.emitValidityState(this.value);
+    },
+  },
+
   mounted() {
-    this.$parent.$emit('isValid', {
-      value: this.isValid(this.value, this.record),
-      name: this.propName,
-    });
+    this.emitValidityState(this.value);
   },
 
   methods: {
@@ -76,9 +79,11 @@ export default {
         value: $event.target.value,
         name: this.propName,
       });
+    },
 
+    emitValidityState(newValue) {
       this.$parent.$emit('isValid', {
-        value: this.isValid($event.target.value, this.record),
+        value: this.isValid(newValue, this.record),
         name: this.propName,
       });
     },

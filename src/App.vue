@@ -24,6 +24,8 @@
         <date-cell
           :value="record.dateFrom"
           :edited="edited"
+          :record="record"
+          :is-valid="dateFromIsValid"
           prop-name="dateFrom"
         />
       </template>
@@ -31,6 +33,8 @@
         <date-cell
           :value="record.dateTo"
           :edited="edited"
+          :record="record"
+          :is-valid="dateToIsValid"
           prop-name="dateTo"
         />
       </template>
@@ -186,6 +190,27 @@ export default {
         options: [],
       }],
     };
+  },
+  methods: {
+    dateFromIsValid(value, record) {
+      if (!value) {
+        return !record.status;
+      }
+      if (!record.dateTo) {
+        return true;
+      }
+      return value < record.dateTo;
+    },
+
+    dateToIsValid(value, record) {
+      if (!value) {
+        return !record.status;
+      }
+      if (!record.dateFrom) {
+        return true;
+      }
+      return value > record.dateFrom;
+    },
   },
 };
 </script>
