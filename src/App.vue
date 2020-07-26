@@ -51,12 +51,13 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex';
+
 import Tree from '@/components/tree/Tree.vue';
 import NameCell from '@/components/tree-cells/NameCell.vue';
 import StatusCell from '@/components/tree-cells/StatusCell.vue';
 import DateCell from '@/components/tree-cells/DateCell.vue';
 import OptionsCell from '@/components/tree-cells/OptionsCell.vue';
-import moment from 'moment';
 
 const FIELDS = [{
   name: 'name',
@@ -119,78 +120,21 @@ export default {
         id: '5',
         name: 'Option 5',
       }],
-
-      records: [{
-        id: 1,
-        name: 'Name1',
-        status: {
-          id: 1,
-          name: 'Status #1',
-        },
-        dateFrom: moment(),
-        dateTo: null,
-        options: [],
-      }, {
-        id: 2,
-        name: 'Name2',
-        status: null,
-        dateFrom: null,
-        dateTo: null,
-        options: [{
-          id: 1,
-          name: 'Option 1',
-        }, {
-          id: 2,
-          name: 'Option 2',
-        }, {
-          id: 3,
-          name: 'Option 3',
-        }],
-      }, {
-        id: 3,
-        name: 'Name3',
-        status: {
-          id: 2,
-          name: 'Status #2',
-        },
-        dateFrom: moment().startOf('year'),
-        dateTo: moment().endOf('month'),
-        options: [],
-      }, {
-        id: 4,
-        parent: 1,
-        name: 'Name4',
-        status: null,
-        dateFrom: moment(),
-        dateTo: null,
-        options: [],
-      }, {
-        id: 5,
-        parent: 4,
-        name: 'Name5',
-        status: null,
-        dateFrom: moment(),
-        dateTo: null,
-        options: [],
-      }, {
-        id: 6,
-        parent: 3,
-        name: 'Name6',
-        status: null,
-        dateFrom: moment(),
-        dateTo: null,
-        options: [],
-      }, {
-        id: 7,
-        parent: 6,
-        name: 'Name7',
-        status: null,
-        dateFrom: moment(),
-        dateTo: null,
-        options: [],
-      }],
     };
   },
+
+  computed: {
+    ...mapState('hierarchy', {
+      records: 'hierarchy',
+    }),
+  },
+
+  mounted() {
+    if (!this.records) {
+      this.fetchHierarchy();
+    }
+  },
+
   methods: {
     dateFromIsValid(value, record) {
       if (!value) {
@@ -211,6 +155,10 @@ export default {
       }
       return value > record.dateFrom;
     },
+
+    ...mapActions('hierarchy', {
+      fetchHierarchy: 'getHierarchy',
+    }),
   },
 };
 </script>

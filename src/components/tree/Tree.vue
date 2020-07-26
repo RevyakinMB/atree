@@ -101,13 +101,16 @@ export default {
 
   watch: {
     records(val) {
-      this.data = val;
+      this.data = val ? [...val] : [];
       this.recordBeingAdded = null;
       this.recordBeingEdited = null;
     },
   },
 
   mounted() {
+    if (!this.records) {
+      return;
+    }
     this.data = [...this.records];
   },
 
