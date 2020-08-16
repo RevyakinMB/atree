@@ -1,9 +1,13 @@
 <template>
   <div class="tree">
     <tree-header
+      v-if="treeNodes.length"
       :columns="columns"
       :readonly="readonly"
     />
+    <span v-else>
+      No data provided.
+    </span>
     <tree-line
       v-for="record in treeNodes"
       :key="record.id || record.localId"
@@ -29,6 +33,22 @@
         :edited="isBeingEdited(record)"
       />
     </tree-line>
+    <div>
+      <input
+        v-if="!actionsAreHidden"
+        type="button"
+        value="Add"
+        class="tree__action-btn"
+        @click="() => recordAddHandler()"
+      >
+      <input
+        v-if="!actionsAreHidden"
+        type="button"
+        value="Save"
+        class="tree__action-btn"
+        @click="onSaveDataClick"
+      >
+    </div>
   </div>
 </template>
 
@@ -57,7 +77,7 @@ export default {
 
     records: {
       type: Array,
-      required: true,
+      required: false,
       default() {
         return [];
       },
@@ -237,6 +257,10 @@ export default {
         [name]: value,
       };
     },
+
+    onSaveDataClick() {
+      this.$emit('save', this.data);
+    },
   },
 };
 </script>
@@ -245,5 +269,9 @@ export default {
   .tree {
     padding: 10px;
     border: 1px dashed black;
+  }
+
+  .tree__action-btn {
+    width: 100px;
   }
 </style>

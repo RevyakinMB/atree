@@ -4,6 +4,7 @@
       :columns="treeColumns"
       :records="records"
       :readonly="false"
+      @save="onSaveClick"
     >
       <template #name="{ record, edited }">
         <name-cell
@@ -158,7 +159,12 @@ export default {
 
     ...mapActions('hierarchy', {
       fetchHierarchy: 'getHierarchy',
+      saveHierarchy: 'saveHierarchy',
     }),
+
+    onSaveClick(data) {
+      this.saveHierarchy(data);
+    },
   },
 };
 </script>

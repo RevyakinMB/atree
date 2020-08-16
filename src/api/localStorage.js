@@ -1,5 +1,3 @@
-import moment from 'moment';
-
 const defaults = {
   statuses: [],
   options: [],
@@ -10,7 +8,7 @@ export const get = (storage) => (uri) => {
   if (!uri) {
     throw new Error('No URI specified.');
   }
-  return storage.getItem(uri) || defaults[uri];
+  return JSON.parse(storage.getItem(uri)) || defaults[uri];
 };
 
 export const put = (storage) => (uri, data) => {
@@ -20,7 +18,7 @@ export const put = (storage) => (uri, data) => {
   if (!data) {
     throw new Error('No data specified.');
   }
-  storage.setItem(uri, data);
+  storage.setItem(uri, JSON.stringify(data));
 };
 
 export const del = (storage) => (uri) => {
@@ -45,7 +43,7 @@ defaults.hierarchy = [{
     id: 1,
     name: 'Status #1',
   },
-  dateFrom: moment(),
+  dateFrom: '2020-08-16T10:08:17.207Z',
   dateTo: null,
   options: [],
 }, {
@@ -71,15 +69,15 @@ defaults.hierarchy = [{
     id: 2,
     name: 'Status #2',
   },
-  dateFrom: moment().startOf('year'),
-  dateTo: moment().endOf('month'),
+  dateFrom: '2019-12-31T21:00:00.000Z',
+  dateTo: '2020-08-31T20:59:59.999Z',
   options: [],
 }, {
   id: 4,
   parent: 1,
   name: 'Name4',
   status: null,
-  dateFrom: moment(),
+  dateFrom: '2020-08-16T10:08:17.208Z',
   dateTo: null,
   options: [],
 }, {
@@ -87,7 +85,7 @@ defaults.hierarchy = [{
   parent: 4,
   name: 'Name5',
   status: null,
-  dateFrom: moment(),
+  dateFrom: '2020-08-16T10:08:17.208Z',
   dateTo: null,
   options: [],
 }, {
@@ -95,7 +93,7 @@ defaults.hierarchy = [{
   parent: 3,
   name: 'Name6',
   status: null,
-  dateFrom: moment(),
+  dateFrom: '2020-08-16T10:08:17.208Z',
   dateTo: null,
   options: [],
 }, {
@@ -103,7 +101,7 @@ defaults.hierarchy = [{
   parent: 6,
   name: 'Name7',
   status: null,
-  dateFrom: moment(),
+  dateFrom: '2020-08-16T10:08:17.208Z',
   dateTo: null,
   options: [],
 }];
