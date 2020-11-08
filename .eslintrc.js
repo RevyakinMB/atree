@@ -25,6 +25,7 @@ module.exports = {
       files: [
         '**/__tests__/*.{j,t}s?(x)',
         '**/tests/unit/**/*.spec.{j,t}s?(x)',
+        '**/tests/unit/**/*.mock.{j,t}s',
       ],
       env: {
         jest: true,

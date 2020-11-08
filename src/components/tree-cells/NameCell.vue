@@ -10,6 +10,7 @@
       v-else
       type="text"
       class="name-cell__edit-input"
+      data-test-id="name-cell-input"
       :value="value"
       @input="onChange"
     >

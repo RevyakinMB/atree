@@ -27,6 +27,7 @@
         <action-button
           text="E"
           tooltip="Edit record"
+          data-test-id="edit-btn"
           @click.native="editHandler"
         />
         <action-button
@@ -44,11 +45,13 @@
         text="S"
         :disabled="!isValid"
         tooltip="Finish editing"
+        data-test-id="finish-editing-btn"
         @click.native="() => $emit('save')"
       />
       <action-button
         text="C"
         tooltip="Cancel editing"
+        data-test-id="cancel-editing-btn"
         @click.native="() => $emit('cancel')"
       />
     </div>

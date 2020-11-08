@@ -5,7 +5,10 @@
       :columns="columns"
       :readonly="readonly"
     />
-    <span v-else>
+    <span
+      v-else
+      data-test-id="is-empty-msg"
+    >
       No data provided.
     </span>
     <tree-line
@@ -39,6 +42,7 @@
         type="button"
         value="Add"
         class="tree__action-btn"
+        data-test-id="add-btn"
         @click="() => recordAddHandler()"
       >
       <input
