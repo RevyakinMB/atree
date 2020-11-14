@@ -19,7 +19,7 @@
       v-if="!readonly"
       class="tree__header__item__actions"
     >
-      Actions
+      {{ $t('Actions') }}
     </div>
   </div>
 </template>

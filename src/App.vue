@@ -60,22 +60,24 @@ import StatusCell from '@/components/tree-cells/StatusCell.vue';
 import DateCell from '@/components/tree-cells/DateCell.vue';
 import OptionsCell from '@/components/tree-cells/OptionsCell.vue';
 
-const FIELDS = [{
+const getFields = ($t) => [{
   name: 'name',
+  title: $t('Name'),
   width: 10,
 }, {
   name: 'status',
+  title: $t('Status'),
 }, {
   name: 'date-from',
-  title: 'Active from',
+  title: $t('Active from'),
   width: 7,
 }, {
   name: 'date-to',
-  title: 'Active until',
+  title: $t('Active until'),
   width: 7,
 }, {
   name: 'options',
-  title: 'Options',
+  title: $t('Options'),
 }];
 
 export default {
@@ -88,38 +90,39 @@ export default {
     OptionsCell,
   },
   data() {
+    const $t = this.$t.bind(this);
     return {
-      treeColumns: FIELDS,
+      treeColumns: getFields($t),
 
       statuses: [{
         id: '1',
-        name: 'Status #1',
+        name: $t('Status #{0}', ['1']),
       }, {
         id: '2',
-        name: 'Status #2',
+        name: $t('Status #{0}', ['2']),
       }, {
         id: '3',
-        name: 'Status #3',
+        name: $t('Status #{0}', ['3']),
       }, {
         id: '4',
-        name: 'Status #4',
+        name: $t('Status #{0}', ['4']),
       }],
 
       options: [{
         id: '1',
-        name: 'Option 1',
+        name: $t('Option {0}', ['1']),
       }, {
         id: '2',
-        name: 'Option 2',
+        name: $t('Option {0}', ['2']),
       }, {
         id: '3',
-        name: 'Option 3',
+        name: $t('Option {0}', ['3']),
       }, {
         id: '4',
-        name: 'Option 4',
+        name: $t('Option {0}', ['4']),
       }, {
         id: '5',
-        name: 'Option 5',
+        name: $t('Option {0}', ['5']),
       }],
     };
   },

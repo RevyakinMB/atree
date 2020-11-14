@@ -20,18 +20,18 @@
     >
       <div v-if="!actionsHidden">
         <action-button
-          text="A"
+          :text="$t('A')"
           tooltip="Add new subrecord"
           @click.native="addHandler"
         />
         <action-button
-          text="E"
+          :text="$t('E')"
           tooltip="Edit record"
           data-test-id="edit-btn"
           @click.native="editHandler"
         />
         <action-button
-          text="D"
+          :text="$t('D')"
           tooltip="Delete record"
           @click.native="removeHandler"
         />
@@ -42,14 +42,14 @@
       class="tree__line__item-actions"
     >
       <action-button
-        text="S"
+        :text="$t('S')"
         :disabled="!isValid"
         tooltip="Finish editing"
         data-test-id="finish-editing-btn"
         @click.native="() => $emit('save')"
       />
       <action-button
-        text="C"
+        :text="$t('C')"
         tooltip="Cancel editing"
         data-test-id="cancel-editing-btn"
         @click.native="() => $emit('cancel')"
@@ -177,7 +177,6 @@ export default {
 
   .tree__line__item-actions {
     text-align: right;
-    margin: 5px;
   }
 
   @media screen and (min-width: 580px) {

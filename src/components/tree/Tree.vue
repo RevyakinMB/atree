@@ -40,7 +40,7 @@
       <input
         v-if="!actionsAreHidden"
         type="button"
-        value="Add"
+        :value="$t('Add')"
         class="tree__action-btn"
         data-test-id="add-btn"
         @click="() => recordAddHandler()"
@@ -48,7 +48,7 @@
       <input
         v-if="!actionsAreHidden"
         type="button"
-        value="Save"
+        :value="$t('Save')"
         class="tree__action-btn"
         @click="onSaveDataClick"
       >

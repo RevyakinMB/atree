@@ -14,7 +14,7 @@
       @change="onChange"
     >
       <option value="">
-        No status
+        {{ $t('No status') }}
       </option>
       <option
         v-for="option in options"
